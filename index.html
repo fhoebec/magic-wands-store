@@ -4,13 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Magic Wand Store</title>
+    <title>Magic Wands Store</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <h1>Magic Wand Store</h1>
-    <div id="product-grid"></div>
-    <div id="cart-icon">🛒 <span id="cart-count">0</span></div>
+    <header>
+        <h1>Magic Wands Store</h1>
+    </header>
+
+    <main>
+        <div id="product-grid" class="product-grid">
+            <!-- Products will be injected here by script.js -->
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Magic Wands Store</p>
+    </footer>
+
     <script src="script.js"></script>
+    <div id="cart-icon">
+    🛒 <span id="cart-count">0</span>
+	</div>
+
 </body>
 </html>
