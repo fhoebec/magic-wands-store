@@ -65,7 +65,6 @@ button:hover {
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     z-index: 999;
-    text-decoration: none;
 }
 
 #cart-icon:hover {
