@@ -4,27 +4,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Manage Orders</title>
+    <title>Admin Dashboard</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="success-container">
-        <h1>👑 Admin Dashboard</h1>
-        <div id="filters">
-            <label>Filter by status:</label>
-            <select id="status-filter">
-                <option value="All">All</option>
-                <option value="Pending">Pending</option>
-                <option value="Shipped">Shipped</option>
-                <option value="Delivered">Delivered</option>
-            </select>
-            <br><br>
-            <label>Search by order ID or date:</label>
-            <input type="text" id="order-search" placeholder="e.g. ORD123456">
-        </div>
-        <div id="order-stats"></div>
-        <div id="admin-orders"></div>
-        <a href="index.html" class="home-btn">Return to Store</a>
-    </div>
+    <h1>Admin Dashboard</h1>
+    <div id="admin-orders-container"></div>
+    <a href="index.html">Return to Store</a>
+    <script>
+        let orders = JSON.parse(localStorage.getItem('orders')) || [];
+        const container = document.getElementById('admin-orders-container');
+
+        function renderAdminOrders() {
+            if (orders.length === 0) {
+                container.innerHTML = "<p>No orders found.</p>";
+                return;
+            }
+
+            container.innerHTML = orders.map((order, index) => `
+                <div class="order-entry">
+                    <h2>${order.id} - ${order.date}</h2>
+                    <ul>
+                        ${order.items.map(item => `
+                            <li>${item.name} ${item.color ? `(${item.color})` : ''} - $${item.price} x ${item.quantity}</li>
+                        `).join('')}
+                    </ul>
+                    <p><strong>Total: $${order.total}</strong></p>
+                    <p>Status: <span>${order.status}</span></p>
+                    <select data-index="${index}" class="status-select">
+                        <option value="Pending" ${order.status === 'Pending' ? 'selected' : ''}>Pending</option>
+                        <option value="Shipped" ${order.status === 'Shipped' ? 'selected' : ''}>Shipped</option>
+                        <option value="Delivered" ${order.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+                    </select>
+                    <button class="delete-btn" data-index="${index}">Delete Order</button>
+                    <hr>
+                </div>
+            `).join('');
+
+            document.querySelectorAll('.status-select').forEach(select => {
+                select.addEventListener('change', (e) => {
+                    const idx = e.target.getAttribute('data-index');
+                    orders[idx].status = e.target.value;
+                    localStorage.setItem('orders', JSON.stringify(orders));
+                    renderAdminOrders();
+                });
+            });
+
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    const idx = e.target.getAttribute('data-index');
+                    if (confirm(`Delete order ${orders[idx].id}?`)) {
+                        orders.splice(idx, 1);
+                        localStorage.setItem('orders', JSON.stringify(orders));
+                        renderAdminOrders();
+                    }
+                });
+            });
+        }
+
+        renderAdminOrders();
+    </script>
 </body>
 </html>

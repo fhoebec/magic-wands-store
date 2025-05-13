@@ -8,10 +8,29 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="success-container">
-        <h1>📝 Order History</h1>
-        <div id="history-container"></div>
-        <a href="index.html" class="home-btn">Return to Store</a>
-    </div>
+    <h1>Order History</h1>
+    <div id="order-history-container"></div>
+    <a href="index.html">Return to Store</a>
+    <script>
+        const orders = JSON.parse(localStorage.getItem('orders')) || [];
+        const container = document.getElementById('order-history-container');
+
+        if (orders.length === 0) {
+            container.innerHTML = "<p>No past orders found.</p>";
+        } else {
+            container.innerHTML = orders.map(order => `
+                <div class="order-entry">
+                    <h2>${order.id} - ${order.date}</h2>
+                    <ul>
+                        ${order.items.map(item => `
+                            <li>${item.name} ${item.color ? `(${item.color})` : ''} - $${item.price} x ${item.quantity}</li>
+                        `).join('')}
+                    </ul>
+                    <p><strong>Total: $${order.total}</strong></p>
+                    <hr>
+                </div>
+            `).join('');
+        }
+    </script>
 </body>
 </html>
