@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Manage Orders</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="success-container">
+        <h1>👑 Admin Dashboard</h1>
+        <div id="filters">
+            <label>Filter by status:</label>
+            <select id="status-filter">
+                <option value="All">All</option>
+                <option value="Pending">Pending</option>
+                <option value="Shipped">Shipped</option>
+                <option value="Delivered">Delivered</option>
+            </select>
+            <br><br>
+            <label>Search by order ID or date:</label>
+            <input type="text" id="order-search" placeholder="e.g. ORD123456">
+        </div>
+        <div id="order-stats"></div>
+        <div id="admin-orders"></div>
+        <a href="index.html" class="home-btn">Return to Store</a>
+    </div>
+</body>
+</html>

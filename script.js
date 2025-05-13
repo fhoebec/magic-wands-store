@@ -1,3 +1,4 @@
+
 const wands = Array.from({ length: 30 }, (_, i) => {
     const hasColors = i % 2 === 0;
     return {
