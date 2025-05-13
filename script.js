@@ -12,8 +12,8 @@ function updateCartCount() {
     }
 }
 
-// Product listing logic for index.html
-if (window.location.pathname.includes('index.html')) {
+const grid = document.getElementById('product-grid');
+if (grid) {
     const wands = Array.from({ length: 30 }, (_, i) => {
         const hasColors = i % 2 === 0;
         return {
@@ -24,24 +24,23 @@ if (window.location.pathname.includes('index.html')) {
         };
     });
 
-    const grid = document.getElementById('product-grid');
     wands.forEach(wand => {
         const card = document.createElement('div');
         card.classList.add('product-card');
 
-        card.innerHTML = `
-            <img src="${wand.image}" alt="${wand.name}">
-            <h2>${wand.name}</h2>
-            ${wand.colors ? `
+        card.innerHTML = \`
+            <img src="\${wand.image}" alt="\${wand.name}">
+            <h2>\${wand.name}</h2>
+            \${wand.colors ? \`
                 <div class="color-options">
                     <label>Select Color:</label>
                     <select>
-                        ${wand.colors.map(color => `<option>${color}</option>`).join('')}
+                        \${wand.colors.map(color => \`<option>\${color}</option>\`).join('')}
                     </select>
                 </div>
-            ` : `<p>No color options</p>`}
+            \` : \`<p>No color options</p>\`}
             <button class="add-to-cart-btn">Add to Cart</button>
-        `;
+        \`;
 
         grid.appendChild(card);
 
@@ -56,14 +55,19 @@ if (window.location.pathname.includes('index.html')) {
             if (existingItem) {
                 existingItem.quantity += 1;
             } else {
-                cart.push({ name: wand.name, color: selectedColor, quantity: 1, price: wand.price });
+                cart.push({
+                    name: wand.name,
+                    color: selectedColor,
+                    quantity: 1,
+                    price: wand.price
+                });
             }
 
             saveCart();
             updateCartCount();
-            alert(`${wand.name} ${selectedColor ? 'in ' + selectedColor : ''} added to cart!`);
+            alert(\`\${wand.name} \${selectedColor ? 'in ' + selectedColor : ''} added to cart!\`);
         });
     });
-
-    updateCartCount();
 }
+
+updateCartCount();
