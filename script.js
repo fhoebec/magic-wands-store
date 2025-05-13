@@ -1,16 +1,27 @@
 
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function updateCartCount() {
+    const cartCount = document.getElementById('cart-count');
+    if (cartCount) {
+        cartCount.textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+    }
+}
+
+const grid = document.getElementById('product-grid');
 const wands = Array.from({ length: 30 }, (_, i) => {
     const hasColors = i % 2 === 0;
     return {
         name: `Magic Wand ${i + 1}`,
         image: `images/wand${i + 1}.jpg`,
-        colors: hasColors ? ["Black", "Brown", "Silver", "Golden"] : null
+        colors: hasColors ? ["Black", "Brown", "Silver", "Golden"] : null,
+        price: Math.floor(Math.random() * 41) + 10
     };
 });
-
-const grid = document.getElementById('product-grid');
-const cartCount = document.getElementById('cart-count');
-let cartItems = 0;
 
 wands.forEach(wand => {
     const card = document.createElement('div');
@@ -37,12 +48,19 @@ wands.forEach(wand => {
         let selectedColor = "";
         if (wand.colors) {
             selectedColor = card.querySelector('select').value;
-            alert(`${wand.name} in ${selectedColor} added to cart!`);
-        } else {
-            alert(`${wand.name} added to cart!`);
         }
 
-        cartItems++;
-        cartCount.textContent = cartItems;
+        const existingItem = cart.find(item => item.name === wand.name && item.color === selectedColor);
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({ name: wand.name, color: selectedColor, quantity: 1, price: wand.price });
+        }
+
+        saveCart();
+        updateCartCount();
+        alert(`${wand.name} ${selectedColor ? 'in ' + selectedColor : ''} added to cart!`);
     });
 });
+
+updateCartCount();
