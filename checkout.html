@@ -10,10 +10,6 @@
 <body>
     <h1>Checkout Page</h1>
     <div id="checkout-container"></div>
-    <div style="margin-top: 50px; text-align:center;">
-        <a href="order-history.html">View Order History</a> |
-        <a href="admin.html">Admin Dashboard</a>
-    </div>
     <script src="script.js"></script>
     <script>
         const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -37,17 +33,19 @@
             `;
 
             document.getElementById('place-order-btn').addEventListener('click', () => {
-                const orders = JSON.parse(localStorage.getItem('orders')) || [];
-                orders.push({
-                    id: 'ORD' + Date.now(),
-                    date: new Date().toLocaleString(),
-                    items: cart,
-                    total: total,
-                    status: 'Pending'
-                });
-                localStorage.setItem('orders', JSON.stringify(orders));
-                localStorage.removeItem('cart');
-                window.location.href = 'success.html';
+                if (confirm(`Confirm your order of $${total}?`)) {
+                    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+                    orders.push({
+                        id: 'ORD' + Date.now(),
+                        date: new Date().toLocaleString(),
+                        items: cart,
+                        total: total,
+                        status: 'Pending'
+                    });
+                    localStorage.setItem('orders', JSON.stringify(orders));
+                    localStorage.removeItem('cart');
+                    window.location.href = 'success.html';
+                }
             });
         }
 
